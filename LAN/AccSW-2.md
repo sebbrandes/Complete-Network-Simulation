@@ -19,7 +19,7 @@ Even if it is not a production project, I like to get into the good habit of not
 
 - **Control access for enable (privileged) mode use of scrypt as the hashing algorithm**
 
-    LAN-AccSW-2(config)# `enable algorithm-type secret scrypt secret ${{secrets.CREDENTIAL_SECRET}}`
+    LAN-AccSW-2(config)# `enable algorithm-type scrypt secret ${{secrets.CREDENTIAL_SECRET}}`
 
 - **Defining username/secret(password) for authentification**
 
@@ -168,13 +168,13 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
 
     LAN-AccSW-2(config)# `int vlan 100`
 
-    LAN-AccSW-2(config-if)# `ip add 172.16.100.2 255.255.255.0`
+    LAN-AccSW-2(config-if)# `ip add 172.16.100.2 255.255.255.128`
 
     LAN-AccSW-2(config-if)# `no shut`
 
     LAN-AccSW-2(config-if)# `exit`
 
-    LAN-AccSW-2(config)# `ip route 0.0.0.0 0.0.0.0 172.16.100.254`
+    LAN-AccSW-2(config)# `ip route 0.0.0.0 0.0.0.0 172.16.100.126`
 
     LAN-AccSW-2(config)# `end`
 
