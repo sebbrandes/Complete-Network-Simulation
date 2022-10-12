@@ -2,7 +2,7 @@
 
 ---
 
-Complete simulation of an IT System using GNS3 and Docker at the hardware (switch, router, firewall), protocol (DHCP, DNS, NTP, ...) and service (Web Server, Proxy, Load Balancer, Backup and Monitoring) level.
+Complete simulation of an IT System using GNS3 and Docker in terms of : hardware (switch, router, firewall), protocol (DHCP, DNS, NTP, ...) and service (Web Server, Proxy, Load Balancer, Backup and Monitoring).
 
 ![Topology](Images/Topology.jpg)
 
@@ -17,6 +17,7 @@ Complete simulation of an IT System using GNS3 and Docker at the hardware (switc
 	- [LAN](#LAN)
 	- [DMZ](#DMZ)
 	- [IT Administration](#admin)
+	- [Firewall](#firewall)
 	- [Network](#network)
 - [How to use](#use)
 - [Tips and tricks](#tips)
@@ -31,7 +32,7 @@ Complete simulation of an IT System using GNS3 and Docker at the hardware (switc
 
 ---
 
-The objective of this project is to use the sum of my current knowledge in the areas of Network, System and Security in order to better understand the interactions between the different components of an IT System. And in the process, keep learning !!!
+The objective of this project is to better understand the interactions between the differents components of an IT System and to go beyond than the content seen in class.
 
 
 ## <a name="desc"></a> Description
@@ -83,9 +84,35 @@ These will be grouped together in the form of a high availability cluster using 
 
 The IT administration is the central point of system supervision (and allow another backup server for safety reason). 
 
+### <a name="firewall"></a> Firewall
+
+For now, only the Cisco solution (Cisco ASA) has been implemented. 
+Open source software solutions such as Pfsense and OPNsense have been discarded because the integration of the "FFRouting" routing plugin does not work.
+In the near future, I hope to be able to implement Juniper brand firewalls to vary vendors (to increase security by preventing a single vulnerability from impacting the entire network).
+
+
+The network is divided in 4 security zones (the higher the security level, the more trusted the interface is) :
+- IT administration : security level 100
+- LAN : security level 90
+- DMZ : security level 50
+- Internet : security level 0
+
+To ensure physical redundancy for the Firewall's interface, the redundant interface is used : combine multiple physical interfaces into one logical interface. Only one of the interfaces in the logical group is active, if it fails : Cisco ASA transparently switches to the next interface in the group and all traffic passes trough it.
+
+The High Availability will be achieved by the implementation of an Active/Standby model. Only one firewall is responsible for the processing traffic, while the other is designated as a hot standby. The standby device has the ability to take over traffic processing functions in case of failure of the active device.
+
+
+- [LAN-Firewall-1](Firewall/LAN-Firewall-1.md)
+- [LAN-Firewall-2](Firewall/LAN-Firewall-2.md)
+- DMZ-Firewall-1
+- DMZ-Firewall-2
+
+
 ### <a name="network"></a> Network
 
 The distribution of routing information is ensured by the OSPF protocol.
+
+
 
 ## <a name="use"></a> How to use
 
@@ -152,7 +179,7 @@ Add the following lines in "Addition directories to make persistent that are not
 /var
 /usr
 
-As a bonus, it will allowed you to access the different Docker files by using "Show in file manager". 
+As a added bonus, it will give you access to the different Docker files by using "Show in file manager". 
 It can be helpful to copy-paste between the Docker (inside your GNS3 VM) and a text editor on your Host.
 
 ## <a name="test"></a> Test 

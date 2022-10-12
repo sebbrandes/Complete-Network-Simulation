@@ -46,6 +46,7 @@ Even if it is not a production project, I like to get into the good habit of not
 As the Distribution Switch, it will needed to have all the VLAN presents in the Access Switch level. 
 The VLAN 10 and 20 are for servers : Service (DCHP, DNS, NTP) and Backup.
 The VLAN 30 and 40 are for endpoints : Dev and Office.
+The VLAN 50 for communication between the Distribution Switch and Firewalls.
 The VLAN 100 is choosen for management purpose (permit access to the configuration of the hardware components accross the LAN network).
 
 -  **Configuring the VLANs name**
@@ -65,6 +66,10 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
     LAN-DisSW-2(config-vlan)# `vlan 40`
 
     LAN-DisSW-2(config-vlan)# `name Office`
+
+    LAN-DisSW-2(config-vlan)# `vlan 50`
+
+    LAN-DisSW-2(config-vlan)# `name Network`
 
     LAN-DisSW-2(config-vlan)# `vlan 100`
 
@@ -172,11 +177,29 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
 
     LAN-DisSW-2(config-if)# `switchport mode trunk`
 
-    LAN-DisSW-2(config-if)# `switchport trunk allowed vlan 10,20,30,40,100`
+    LAN-DisSW-2(config-if)# `switchport trunk allowed vlan 10,20,30,40,50,100`
 
     LAN-DisSW-2(config-if)# `switchport nonegotiate`
 
     LAN-DisSW-2(config-if)# `exit`
+
+- **Configuring the interfaces of the Distribution Switch for the connection to the Firewalls**
+
+    LAN-DisSW-1(config)# `int e3/0`
+
+    LAN-DisSW-1(config-if)# `switchport mode access`
+
+    LAN-DisSW-1(config-if)# `switchport access vlan 50`
+
+    LAN-DisSW-1(config-if)# `exit`
+
+    LAN-DisSW-1(config)# `int e3/1`
+
+    LAN-DisSW-1(config-if)# `switchport mode access`
+
+    LAN-DisSW-1(config-if)# `switchport access vlan 50`
+
+    LAN-DisSW-1(config-if)# `exit`
 
 - **Switching off the unuse interface**
 
@@ -247,6 +270,16 @@ The Distribution Switch 2 will be prioritized for the routing of VLAN 20 and 40.
     LAN-DisSW-2(config-if)# `ip helper-address 172.16.10.12`
 
     LAN-DisSW-2(config-if)# `exit` 
+
+    LAN-DisSW-2(config)# `int vlan 50`
+
+    LAN-DisSW-2(config-if)# `ip add 172.16.50.2 255.255.255.248`
+
+    LAN-DisSW-2(config-if)# `no shut`
+
+    LAN-DisSW-2(config-if)# `standby 50 ip 172.16.50.3`
+
+    LAN-DisSW-2(config-if)# `exit`
 
     LAN-DisSW-2(config)# `int vlan 100`
 

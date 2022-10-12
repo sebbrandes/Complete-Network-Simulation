@@ -4,7 +4,7 @@
 
 The naming convention of the hardware is [zone location]-\[architecture location][Hardware Type]-\[number].
 
-- **Defining the hardware hostname**
+- **Define the hardware hostname**
 
     ios> `en`
 
@@ -20,11 +20,11 @@ Even if it is not a production project, I like to get into the good habit of not
 
     DMZ-DisSW-1(config)# `enable algorithm-type scrypt secret ${{secrets.CREDENTIAL_SECRET}}`
 
-- **Defining username/secret(password) for authentification**
+- **Define username/secret(password) for authentification**
 
     DMZ-DisSW-1(config)# `username admin algorithm-type scrypt secret ${{secrets.CREDENTIAL_SECRET}}`
 
-- **Configuring the command line to use locally configured username/secret pairs**
+- **Commmand line configuration to use locally configured username/secret pairs**
 
     DMZ-DisSW-1(config)# `line con 0`
 
@@ -32,7 +32,7 @@ Even if it is not a production project, I like to get into the good habit of not
 
     DMZ-DisSW-1(config-line)# `exit`
 
-- **Configuring the terminal access to use locally configured username/secret pairs**
+- **Terminal access configuration to use locally configured username/secret pairs**
 
     DMZ-DisSW-1(config)# `line vty 0 4`
 
@@ -42,12 +42,17 @@ Even if it is not a production project, I like to get into the good habit of not
 
 ## <ins>VLANs Configuration</ins>
 
-This switch is connected to the different servers. 
+This switch is connected to the different servers.
+VLAN 50 for the communication between the Switch and the Firewalls 
 VLAN 70 for the forwarding Proxy and DNS public resolution. 
 VLAN 80 for the reverse Proxy/Load Balancer and Web servers.
 And finally, VLAN 100 for management purpose.
 
-- **Configuring the VLANs name**
+- **Define the VLANs name**
+
+    DMZ-DisSW-1(config)# `vlan 50`
+
+    DMZ-DisSW-1(config-vlan)# `name Network`
 
     DMZ-DisSW-1(config)# `vlan 70`
 
@@ -65,7 +70,7 @@ And finally, VLAN 100 for management purpose.
 
 ## <ins> Interface Configuration</ins>
 
-- **Configuring the switch interfaces of the Distribution Switch for the connection to the Acces switch (use of etherchannel to increase the bandwith)**
+- **Configuration of the Distribution Switch interfaces for the connection to the Access switch (use of etherchannel to increase the bandwith)**
 
     DMZ-DisSW-1(config)# `int range e1/0-1`
 
@@ -107,7 +112,7 @@ And finally, VLAN 100 for management purpose.
 
     DMZ-DisSW-1(config-if)# `exit`
 
-- **Configuring the interfaces of the Distribution Switch for the connection to the second Distribution Switch**
+- **Configuration of the Distribution Switch interfaces for the connection to the second Distribution Switch**
 
     DMZ-DisSW-1(config)# `int range e3/0-1`
 
@@ -123,52 +128,28 @@ And finally, VLAN 100 for management purpose.
 
     DMZ-DisSW-1(config-if)# `switchport mode trunk`
 
-    DMZ-DisSW-1(config-if)# `switchport trunk allowed vlan 70,80,100`
+    DMZ-DisSW-1(config-if)# `switchport trunk allowed vlan 50,70,80,100`
 
     DMZ-DisSW-1(config-if)# `switchport nonegotiate`
 
     DMZ-DisSW-1(config-if)# `exit`
 
-- **Configuring the IP address of the interfaces connected to the Firewalls**
+- **Configuration of the Distribution Switch interfaces for the connection to the LAN-Firewalls**
 
     DMZ-DisSW-1(config)# `int e0/0`
-
-    DMZ-DisSW-1(config-if)# `no switchport`
-
-    DMZ-DisSW-1(config-if)# `ip add 172.16.50.18 255.255.255.252`
-
-    DMZ-DisSW-1(config-if)# `no shut`
-
+    
+    DMZ-DisSW-1(config-if)# `switchport mode access`
+    
+    DMZ-DisSW-1(config-if)# `switchport access vlan 50`
+    
     DMZ-DisSW-1(config-if)# `exit`
-
-    DMZ-DisSW-1(config)# `int e0/1`
-
-    DMZ-DisSW-1(config-if)# `no switchport`
-
-    DMZ-DisSW-1(config-if)# `ip add 172.16.50.33 255.255.255.252`
-
-    DMZ-DisSW-1(config-if)# `no shut`
-
-    DMZ-DisSW-1(config-if)# `exit`
-
+    
     DMZ-DisSW-1(config)# `int e0/2`
-
-    DMZ-DisSW-1(config-if)# `no switchport`
-
-    DMZ-DisSW-1(config-if)# `ip add 172.16.50.30 255.255.255.252`
-
-    DMZ-DisSW-1(config-if)# `no shut`
-
-    DMZ-DisSW-1(config-if)# `exit`
-
-    DMZ-DisSW-1(config)# `int e0/3`
-
-    DMZ-DisSW-1(config-if)# `no switchport`
-
-    DMZ-DisSW-1(config-if)# `ip add 172.16.50.41 255.255.255.252`
-
-    DMZ-DisSW-1(config-if)# `no shut`
-
+    
+    DMZ-DisSW-1(config-if)# `switchport mode access`
+    
+    DMZ-DisSW-1(config-if)# `switchport access vlan 50`
+    
     DMZ-DisSW-1(config-if)# `exit`
 
 - **Switching off the unuse interface**
@@ -181,9 +162,23 @@ And finally, VLAN 100 for management purpose.
 
 ## <ins>Inter-VLAN routing configuration</ins>
 
-The Distribution Switch 1 will be prioritized for the routing of VLAN 70 and 100.
+The Distribution Switch 1 will be prioritized for the routing of VLAN 50, 70 and 100.
 
-- **Configuring the VLAN interface for Inter-VLAN routing and HSRP**
+- **VLAN interface configuration for Inter-VLAN routing and HSRP**
+
+    DMZ-DisSW-1(config)# `int vlan 50`
+
+    DMZ-DisSW-1(config-if)# `ip add 172.16.50.11 255.255.255.248`
+
+    DMZ-DisSW-1(config-if)# `no shut`
+
+    DMZ-DisSW-1(config-if)# `standby 50 ip 172.16.50.13`
+
+    DMZ-DisSW-1(config-if)# `standby 50 priority 150`
+
+    DMZ-DisSW-1(config-if)# `standby 50 preempt`
+
+    DMZ-DisSW-1(config-if)# `exit`
 
     DMZ-DisSW-1(config)# `int vlan 70`
 
@@ -223,13 +218,13 @@ The Distribution Switch 1 will be prioritized for the routing of VLAN 70 and 100
 
     DMZ-DisSW-1(config-if)# `exit`
 
-## <ins>Configuring the ACL for inter-VLAN Routing</ins>
+## <ins>Define ACL for inter-VLAN Routing</ins>
 
 ...
 
 ## <ins>Spanning-Tree Configuration</ins>
 
-- **Configuring the Spanning-Tree priority for choosing the root switch**
+- **Define the Spanning-Tree priority for choosing the root switch**
 
     The same choice for the switch priority have been taken for spanning-tree and inter-vlan routing. 
 
