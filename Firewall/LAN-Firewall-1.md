@@ -67,6 +67,12 @@ Even if it is not a production project, I like to get into the good habit of not
     LAN-Firewall(config-if)# `ip add 172.16.50.5 
     255.255.255.248 standby 172.16.50.6`
 
+    Enable OSPF MD5 authentication
+
+    LAN-Firewall(config-if)# `ospf message-digest-key 1 md5 secret`
+
+    LAN-Firewall(config-if)# `exit`
+
 
 - **Interfaces in the DMZ area :**
 
@@ -95,6 +101,12 @@ Even if it is not a production project, I like to get into the good habit of not
     LAN-Firewall(config-if)# `ip add 172.16.50.9 
     255.255.255.248 standby 172.16.50.10`
 
+    Enable OSPF MD5 authentication
+
+    LAN-Firewall(config-if)# `ospf message-digest-key 1 md5 secret`
+
+    LAN-Firewall(config-if)# `exit`
+
 - **Interfaces in the ADMIN area :**
 
     LAN-Firewall(config)# `int g0/5`
@@ -120,6 +132,12 @@ Even if it is not a production project, I like to get into the good habit of not
     LAN-Firewall(config-if)# `security-level 100`
 
     LAN-Firewall(config-if)# `ip add 172.16.60.5 255.255.255.248 standby 172.16.60.6`
+
+    Enable OSPF MD5 authentication
+
+    LAN-Firewall(config-if)# `ospf message-digest-key 1 md5 secret`
+
+    LAN-Firewall(config-if)# `exit`
 
     
 ## <ins>High Availability Configuration</ins>
@@ -183,6 +201,12 @@ Even if it is not a production project, I like to get into the good habit of not
     LAN-Firewall/act(config-router)# `network 172.16.100.0 255.255.255.128 area 0`
 
     LAN-Firewall/act(config-router)# `network 172.16.100.128 255.255.255.128 area 0`
+
+    The area authentication message-digest command in this configuration enables authentications for all of the router interfaces in a particular area
+
+    LAN-Firewall/act(config-router)# `area 0 authentication message-digest`
+
+    LAN-Firewall/act(config-router)# `exit`
 
 ## <ins>Firewall's Rule</ins>
 
