@@ -327,9 +327,9 @@ The Distribution Switch 1 will be prioritized for the routing of VLAN 10, 30, 50
 
     LAN-DisSW-1(config)# `int vlan 30`
 
-    LAN-DisSW-1(config)# `ip access-group 130 in`
+    LAN-DisSW-1(config-if)# `ip access-group 130 in`
 
-    LAN-DisSW-1(config)# `exit`
+    LAN-DisSW-1(config-if)# `exit`
 
     LAN-DisSW-1(config)# `access-list 140 remark permit only access to the service's port of the server`
 
@@ -355,9 +355,9 @@ The Distribution Switch 1 will be prioritized for the routing of VLAN 10, 30, 50
 
     LAN-DisSW-1(config)# `int vlan 40`
 
-    LAN-DisSW-1(config)# `ip access-group 140 in`
+    LAN-DisSW-1(config-if)# `ip access-group 140 in`
 
-    LAN-DisSW-1(config)# `exit`
+    LAN-DisSW-1(config-if)# `exit`
     
 ## <ins>Spanning-Tree Configuration</ins>
 
@@ -374,5 +374,52 @@ The Distribution Switch 1 will be prioritized for the routing of VLAN 10, 30, 50
     LAN-DisSW-1(config)# `spanning-tree vlan 40 root secondary`
     
     LAN-DisSW-1(config)# `spanning-tree vlan 100 root primary`
+
+## <ins>Routing Configuration</ins>
+
+- **Enable OSPF and specify network**
+
+    LAN-DisSW-1(config)# `router ospf 1`
+
+    LAN-DisSW-1(config-router)# `network 172.16.10.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.20.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.30.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.40.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.50.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.60.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.70.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.80.0 255.255.255.0 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.100.0 255.255.255.128 area 0`
+
+    LAN-DisSW-1(config-router)# `network 172.16.100.128 255.255.255.128 area 0`
+
+    OPSF Passive Interface Configuration for interfaces that are not connected to an OSPF device (L3 Switch, Router, Firewall)
+
+    LAN-DisSW-1(config-router)# `passive-interface default`
+
+    LAN-DisSW-1(config-router)# `no passive-interface vlan 50`
+
+    The area authentication message-digest command in this configuration enables authentications for all the router interfaces in a particular area
+
+    LAN-DisSW-1(config-router)# `area 0 authentication message-digest`
+    
+- **OSPF authentication configuration**
+
+    LAN-DisSW-1(config)# `int vlan 50`
+
+    Enable OSPF MD5 authentication
+
+    LAN-DisSW-1(config-if)# `ip ospf message-digest-key 1 md5 secret`
+
+    LAN-DisSW-1(config-if)# `exit`
+
 
 
