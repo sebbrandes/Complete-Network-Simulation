@@ -156,6 +156,16 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
 
     LAN-AccSW-2(config-if)# `exit`
 
+    Restrict access to interfaces to authorized devices only
+
+    LAN-AccSW-2(config)# `int range e0/0-3,e1/0-3`
+
+    LAN-AccSW-2(config-if-range)# `switchport port-security`
+
+    LAN-AccSW-2(config-if-range)# `switchport port-security mac-address sticky`
+
+    LAN-AccSW-2(config-if-range)# `exit`
+
 - **Switching off the unuse interface**
 
     LAN-AccSW-2(config)# `int range e2/2-3, e3/2-3`

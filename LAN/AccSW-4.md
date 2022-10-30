@@ -62,7 +62,7 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
 
 - **Configuring the switch interfaces for the endpoints**
 
-    LAN-AccSW-4(config)# `int range e0/0`
+    LAN-AccSW-4(config)# `int e0/0`
 
     LAN-AccSW-4(config-if)# `switchport mode access`
 
@@ -71,6 +71,12 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
     LAN-AccSW-4(config-if)# `spanning-tree portfast`
 
     LAN-AccSW-4(config-if)# `spanning-tree bpduguard enable`
+
+    Restrict access to the interface to authorized devices only
+
+    LAN-AccSW-4(config-if)# `switchport port-security`
+
+    LAN-AccSW-4(config-if)# `switchport port-security mac-address sticky`
 
     LAN-AccSW-4(config-if)# `exit`
 

@@ -114,6 +114,16 @@ The VLAN 100 is choosen for management purpose (permit access to the configurati
 
     LAN-AccSW-1(config-if)# `exit`
 
+    Restrict access to interfaces to authorized devices only
+
+    LAN-AccSW-1(config)# `int range e0/0-3,e1/0-3`
+
+    LAN-AccSW-1(config-if-range)# `switchport port-security`
+
+    LAN-AccSW-1(config-if-range)# `switchport port-security mac-address sticky`
+
+    LAN-AccSW-1(config-if-range)# `exit`
+
 - **Configuring the switch interfaces of the Access Switch for the connection to the Distribution switch (use of etherchannel to increase the bandwith)**
 
     LAN-AccSW-1(config)# `int range e2/0-1`
