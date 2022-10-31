@@ -381,25 +381,18 @@ The Distribution Switch 1 will be prioritized for the routing of VLAN 10, 30, 50
 
     LAN-DisSW-1(config)# `router ospf 1`
 
-    LAN-DisSW-1(config-router)# `network 172.16.10.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.10.0 0.0.0.255 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.20.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.20.0 0.0.0.255 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.30.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.30.0 0.0.0.255 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.40.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.40.0 0.0.0.255 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.50.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.50.0 0.0.0.255 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.60.0 255.255.255.0 area 0`
+    LAN-DisSW-1(config-router)# `network 172.16.100.0 0.0.0.127 area 0`
 
-    LAN-DisSW-1(config-router)# `network 172.16.70.0 255.255.255.0 area 0`
-
-    LAN-DisSW-1(config-router)# `network 172.16.80.0 255.255.255.0 area 0`
-
-    LAN-DisSW-1(config-router)# `network 172.16.100.0 255.255.255.128 area 0`
-
-    LAN-DisSW-1(config-router)# `network 172.16.100.128 255.255.255.128 area 0`
 
     OPSF Passive Interface Configuration for interfaces that are not connected to an OSPF device (L3 Switch, Router, Firewall)
 

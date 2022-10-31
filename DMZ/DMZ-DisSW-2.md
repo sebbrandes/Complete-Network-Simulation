@@ -121,7 +121,7 @@ And finally, VLAN 100 for management purpose.
 
     DMZ-DisSW-2(config)# `int port-channel 23`
 
-    DMZ-DisSW-2(config-if)# `Description Link to DMZ-DisSW-2`
+    DMZ-DisSW-2(config-if)# `Description Link to DMZ-DisSW-1`
 
     DMZ-DisSW-2(config-if)# `switchport trunk encapsulation dot1q`
 
@@ -224,3 +224,38 @@ The Distribution Switch 2 will be prioritized for the routing of VLAN 80.
     DMZ-DisSW-2(config)# `spanning-tree vlan 80 root primary`
 
     DMZ-DisSW-2(config)# `spanning-tree vlan 100 root secondary`
+
+## <ins>Routing Configuration</ins>
+
+- **Enable OSPF and specify network**
+
+    DMZ-DisSW-2(config)# `router ospf 1`
+
+    DMZ-DisSW-2(config-router)# `network 172.16.50.0 0.0.0.255 area 0`
+
+    DMZ-DisSW-2(config-router)# `network 172.16.70.0 0.0.0.255 area 0`
+
+    DMZ-DisSW-2(config-router)# `network 172.16.80.128 0.0.0.127 area 0`
+
+    DMZ-DisSW-2(config-router)# `network 172.16.100.0 0.0.0.127 area 0`
+
+
+    OPSF Passive Interface Configuration for interfaces that are not connected to an OSPF device (L3 Switch, Router, Firewall)
+
+    DMZ-DisSW-2(config-router)# `passive-interface default`
+
+    DMZ-DisSW-2(config-router)# `no passive-interface vlan 50`
+
+    The area authentication message-digest command in this configuration enables authentications for all the router interfaces in a particular area
+
+    DMZ-DisSW-2(config-router)# `area 0 authentication message-digest`
+    
+- **OSPF authentication configuration**
+
+    DMZ-DisSW-2(config)# `int vlan 50`
+
+    Enable OSPF MD5 authentication
+
+    DMZ-DisSW-2(config-if)# `ip ospf message-digest-key 1 md5 secret`
+
+    DMZ-DisSW-2(config-if)# `exit`

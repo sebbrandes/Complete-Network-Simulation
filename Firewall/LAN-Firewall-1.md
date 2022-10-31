@@ -182,25 +182,9 @@ Even if it is not a production project, I like to get into the good habit of not
 
     LAN-Firewall/act(config)# `router opsf 1`
 
-    LAN-Firewall/act(config-router)# `network 172.16.10.0 255.255.255.0 area 0`
+    LAN-Firewall/act(config-router)# `network 172.16.50.0 0.0.0.255 area 0`
 
-    LAN-Firewall/act(config-router)# `network 172.16.20.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.30.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.40.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.50.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.60.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.70.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.80.0 255.255.255.0 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.100.0 255.255.255.128 area 0`
-
-    LAN-Firewall/act(config-router)# `network 172.16.100.128 255.255.255.128 area 0`
+    LAN-Firewall/act(config-router)# `network 172.16.60.0 0.0.0.255 area 0`
 
     The area authentication message-digest command in this configuration enables authentications for all of the router interfaces in a particular area
 
